@@ -23,11 +23,14 @@ Choose an Option: ''');
         String? taskName = stdin.readLineSync();
         print('Task Description');
         String? description = stdin.readLineSync();
+         print('Task ID');
+        String? taskId = stdin.readLineSync();
         if (taskName != null &&
             taskName.isNotEmpty &&
             description != null &&
-            description.isNotEmpty) {
-          taskManager.addTask(taskName, description);
+            description.isNotEmpty
+            && taskId !=null && taskId.isNotEmpty) {
+          taskManager.addTask(taskName, description, taskId);
         } else {
           print('Invalid Task Name or description.');
         }
@@ -35,10 +38,10 @@ Choose an Option: ''');
 
       case '2':
         taskManager.viewTask();
-        print("/n");
+        print("\n");
         break;
 
-      case '3':
+        case '3':
         taskManager.viewTask();
         print('Enter The Task Number to Update: ');
         String? updated = stdin.readLineSync();
@@ -46,14 +49,17 @@ Choose an Option: ''');
         print('Enter New Task Name:');
         String? newName = stdin.readLineSync();
         print('Enter New Task Description');
+         String? newtaskId = stdin.readLineSync();
+        print('Enter New TaskId');
         String? newDescription = stdin.readLineSync();
         if (newName != null &&
             newName.isNotEmpty &&
             newDescription != null &&
-            newDescription.isNotEmpty) {
-          taskManager.updateTask(index - 1, newName, newDescription);
+            newDescription.isNotEmpty&&
+            newtaskId!=null&& newtaskId.isNotEmpty) {
+          taskManager.updateTask(index - 1, newName, newDescription ,newtaskId);
         } else {
-          print('Invalid Name or Discription');
+          print('Invalid Name or Discription or TaskId');
         }
         break;
 
@@ -74,7 +80,7 @@ Choose an Option: ''');
 
       case '6':
         print('Exiting Task Manager.');
-        return;
+        return ;
 
       default:
         print('Invalid Choice. Please Try Again.');
@@ -88,11 +94,14 @@ Choose an Option: ''');
 //Task Manager Class
 
 class TaskManager {
-  List<Task> tasks = [];
+  List<Task> tasks = [
+   
+  ];
 
   //Add New task
-  void addTask(String taskName, String description) {
+  void addTask(String taskId, String taskName, String description) {
     tasks.add(Task(
+      taskId,
       taskName,
       description,
     ));
@@ -105,18 +114,19 @@ class TaskManager {
       print('No Task vailable');
     } else {
       for (int i = 0; i < tasks.length; i++) {
-        print('${i + 1}. ${tasks[i]}');
+        print('${i + 1}. ${tasks[i].taskId} -${tasks[i].taskName} - ${tasks[i].description}');
       }
     }
   }
 
   //update task
-  void updateTask(int index, String newTaskName, String newDescription) {
+  void updateTask(int index, String newTaskName, String newDescription,String newtaskId) {
     if (index < 0 || index >= tasks.length) {
       print('Invalid Index');
     } else {
       tasks[index].taskName = newTaskName;
       tasks[index].description = newDescription;
+       tasks[index].taskId = newtaskId;
       print('Task Update Sucessfully');
     }
   }
@@ -148,12 +158,17 @@ class Task {
   String? taskName;
   String? description;
   bool isCompleted = false;
-
+  String ? taskId;
   // constructor
-  Task(this.taskName, this.description);
+  Task(this.taskName, this.description ,this.taskId);
 
-  // @override
-  // String toString() {
-  //   return '${isCompleted ? "[x]" : "[ ]"} $taskName $description';
-  // }
 }
+
+
+
+
+
+
+
+
+
